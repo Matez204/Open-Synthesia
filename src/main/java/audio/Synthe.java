@@ -20,13 +20,13 @@ public class Synthe implements Runnable{
 
     public void sonar(int note, int time) throws InterruptedException {
         this.channel.noteOn(note, 100);
-        Thread.sleep((long)time);
+        Thread.sleep(time);
         this.channel.noteOff(note);
     }
 
     public void sonar() throws InterruptedException {
-        this.channel.noteOn(note, 100);
-        Thread.sleep((long)time);
+        this.channel.noteOn(note, 1000);
+        Thread.sleep(time);
         this.channel.noteOff(note);
     }
 

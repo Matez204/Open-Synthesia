@@ -1,8 +1,11 @@
+import audio.Synthe;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import javax.sound.midi.MidiUnavailableException;
 
 public class Main extends Application{
     @Override
@@ -15,8 +18,8 @@ public class Main extends Application{
         stage.show();
     }
 
-    public static void main(String[] args) {
-//        launch();
-
+    public static void main(String[] args) throws MidiUnavailableException, InterruptedException {
+        launch();
+        Synthe audio = new Synthe(0);
     }
 }
