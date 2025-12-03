@@ -8,7 +8,7 @@ import javax.sound.midi.Synthesizer;
 
 public class Synthe implements Runnable{
     public Synthesizer sin = MidiSystem.getSynthesizer();
-    MidiChannel channel;
+    public MidiChannel channel;
     private int note;
     private int time;
 
@@ -18,9 +18,9 @@ public class Synthe implements Runnable{
         this.channel.programChange(instrument);
     }
 
-    public void sonar(int note, int time) throws InterruptedException {
-        this.channel.noteOn(note, 100);
-        Thread.sleep(time);
+    public void sonar(int note, double time) throws InterruptedException {
+        this.channel.noteOn(note, 1000);
+        Thread.sleep((long) time);
         this.channel.noteOff(note);
     }
 
