@@ -30,8 +30,11 @@ public class Reader {
         notesMIDI.put("NEGRA",1.0);
         notesMIDI.put("CORCHEA",0.5);
         notesMIDI.put("SEMICORCHEA",0.25);
+        notesMIDI.put("SIL",0.0);
+        notesMIDI.put("BLANCAP",3.0);
+        notesMIDI.put("NEGRAP",1.5);
     }
-    public List<List<Double>>[] Read(String link) throws IOException {
+    public List<List<Double>>[] read(String link) throws IOException {
         String partitura = Files.readString(Path.of(link));
         List<List<Double>> mano1 = new ArrayList<>();
         List<List<Double>> mano2 = new ArrayList<>();
