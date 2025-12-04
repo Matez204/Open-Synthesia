@@ -12,11 +12,11 @@ public class PianoView extends Pane {
         buildKeyBoard();
     }
     public void buildKeyBoard(){
-        int startMidi = 48;
-        int finalMidi = 84;
-        double whiteWidth = 40;
+        int startMidi = 36;
+        int finalMidi = 96;
+        double whiteWidth = 32;
         double whiteHeidth = 200;
-        double blackWidth = 25;
+        double blackWidth = 20;
         double blackHeidth = 120;
 
         double x = 0;
@@ -39,10 +39,15 @@ public class PianoView extends Pane {
                 tecla.shape.setWidth(blackWidth);
                 tecla.shape.setHeight(blackHeidth);
                 tecla.shape.setFill(Color.BLACK);
-                tecla.shape.setWidth(x-(whiteWidth/2));
-                tecla.shape.setHeight(0);
+                tecla.shape.setX(x-(whiteWidth/4));
+                tecla.shape.setY(0);
                 getChildren().add(tecla.shape);
                 keys.add(tecla);
+            }
+        }
+        for (KeyView k : keys){
+            if(k.isBlack){
+                k.shape.toFront();
             }
         }
     }
@@ -52,10 +57,14 @@ public class PianoView extends Pane {
                 .findFirst()
                 .orElse(null);
     }
-    public void press(int midi){
+    public void press(int midi, boolean rol){
         KeyView tecla = getKey(midi);
         if (tecla!=null){
-            tecla.shape.setFill(tecla.isBlack ? Color.DARKBLUE : Color.LIGHTBLUE);
+            if(rol){
+                tecla.shape.setFill(tecla.isBlack ? Color.DARKBLUE : Color.LIGHTBLUE);
+            } else {
+                tecla.shape.setFill(tecla.isBlack ? Color.DARKGREEN : Color.LIGHTGREEN);
+            }
         }
     }
     public void release(int midi){
