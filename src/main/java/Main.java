@@ -1,25 +1,87 @@
+import audio.Metronome;
 import audio.Synthe;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+import reading.Reader;
 
 import javax.sound.midi.MidiUnavailableException;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class Main extends Application{
+
     @Override
-    public void start(Stage stage) {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        Scene scene = new Scene(new StackPane(l), 640, 480);
+    public void start(Stage stage) throws Exception {
+        Metronome metro = new Metronome();
+        Synthe sintR = new Synthe(0);
+        Synthe sintL = new Synthe(0);
+        Reader read = new Reader();
+        List<List<Double>>[] cancion = read.read("data/partituras/partitura1.txt");
+        sintR.stab(cancion[0]);
+        sintL.stab(cancion[1]);
+
+        DoubleProperty dimenX = new SimpleDoubleProperty();
+        DoubleProperty dimenY = new SimpleDoubleProperty();
+        Label size = new Label("Dimenciones de la ventana");
+        TextField showSize = new TextField();
+        showSize.textProperty().bind(
+                Bindings.format("(%.1f, %.1f)",dimenX,dimenY)
+        );
+        GridPane gp = new GridPane();
+        gp.add(size,0,0);
+        gp.add(showSize,0,1);
+        gp.setHgap(10.0);
+        HBox h = new HBox(gp);
+        h.setAlignment(Pos.CENTER);
+        Label l1 = new Label("Haz click en algun lado");
+        Label l = new Label("Mira el rectangulo");
+        Rectangle rectangulo = new Rectangle(100,50, Color.BLUE);
+        Button boton = new Button("Hacer click");
+        VBox raiz = new VBox(20);
+        raiz.getChildren().addAll(h,l1,l,rectangulo,boton);
+        raiz.setAlignment(Pos.CENTER);
+        raiz.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            double x = event.getX();
+            double y = event.getY();
+            l1.setText("Hiciste click en x: " + x + "y en y: " + y);
+            dimenX.set(stage.getWidth());
+            dimenY.set(stage.getHeight());
+            new Thread(sintR).start();
+            new Thread(sintL).start();
+        });
+        AtomicInteger contador = new AtomicInteger();
+        boton.setOnAction(i -> {
+            contador.getAndIncrement();
+            l.setText("El rectangulo cambio " + contador );
+            rectangulo.setScaleX(1.5);
+            rectangulo.setScaleY(1.5);
+        });
+        Scene scene = new Scene(raiz, 640, 480);
         stage.setScene(scene);
+        stage.setOnShown((event) -> {
+            dimenX.set(stage.getWidth());
+            dimenY.set(stage.getHeight());
+        });
         stage.show();
     }
 
     public static void main(String[] args) throws MidiUnavailableException, InterruptedException {
         launch();
-        Synthe audio = new Synthe(0);
     }
 }

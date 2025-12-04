@@ -31,7 +31,7 @@ public class Reader {
         notesMIDI.put("CORCHEA",0.5);
         notesMIDI.put("SEMICORCHEA",0.25);
         notesMIDI.put("SIL",0.0);
-        notesMIDI.put("BLANCAP",3.0);
+        notesMIDI.put("BLANCAP",this.notesMIDI.get("BLANCA")*1.5);
         notesMIDI.put("NEGRAP",1.5);
     }
     public List<List<Double>>[] read(String link) throws IOException {
