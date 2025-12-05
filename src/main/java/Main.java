@@ -2,6 +2,8 @@ import audio.Metronome;
 import audio.Synthe;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Pair;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,17 +29,11 @@ public class Main extends Application{
     private static ChoiceBox<Pair<String,String>> canciones = new ChoiceBox<>();
     private static Pair<String,String> EMPTY_PAIR = new Pair<>("","");
     private static AtomicReference<String> pathCancion = new AtomicReference<>();
+    private static PianoView piano = new PianoView();
+
     @Override
     public void start(Stage stage) throws Exception {
-        PianoView piano = new PianoView();
-        Metronome metro = new Metronome();
-        Synthe sintR = new Synthe(0);
-        sintR.setPiano(piano);
-        Synthe sintL = new Synthe(0);
-        sintL.setPiano(piano);
-        Reader read = new Reader();
-        List<List<Double>> cancionSelesccionada = new ArrayList<>();
-        stage.setScene(primeraEscena());
+        stage.setScene(primeraEscena(stage));
         stage.show();
     }
 
@@ -68,7 +64,7 @@ public class Main extends Application{
         canciones.setValue(EMPTY_PAIR);
     }
 
-    public static Scene primeraEscena(){
+    public static Scene primeraEscena(Stage stage){
         Label titulo1 = new Label("Open Synthesia");
         titulo1.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
         Button pianoBoton = new Button("Piano");
@@ -97,15 +93,11 @@ public class Main extends Application{
         });
 
         pianoBoton.setOnAction(event ->{
-//            try {
-//                List<List<Double>>[] cancion = read.read(pathCancion.get());
-//                sintR.stab(cancion[0],true);
-//                sintL.stab(cancion[1],false);
-//                new Thread(sintR).start();
-//                new Thread(sintL).start();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
+            try {
+                stage.setScene(segundaEscena(stage));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
         VBox primeraRaiz = new VBox(titulo1,pianoBoton,eleccionCancion);
         primeraRaiz.setSpacing(10.0);
@@ -113,7 +105,46 @@ public class Main extends Application{
         return new Scene(primeraRaiz,500,500);
     }
 
-    public static Scene segundaEscena(){
-        
+    public static Scene segundaEscena(Stage stage) throws Exception {
+        Metronome metro = new Metronome();
+        Synthe sintR = new Synthe(0);
+        sintR.setPiano(piano);
+        Synthe sintL = new Synthe(0);
+        sintL.setPiano(piano);
+        Reader read = new Reader();
+
+        Button volver = new Button("Volver");
+        volver.setOnAction(event -> {
+            stage.setScene(primeraEscena(stage));
+        });
+        Button repetir = new Button("Iniciar");
+        repetir.setOnAction(event -> {
+            repetir.setText("Repetir");
+            List<List<Double>>[] cancion;
+            try {
+                cancion = read.read(pathCancion.get());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            sintR.stab(cancion[0], true);
+            sintL.stab(cancion[1],false);
+            new Thread(sintR).start();
+            new Thread(sintL).start();
+        });
+
+        AnchorPane botonesSuperiores = new AnchorPane();
+
+        AnchorPane.setTopAnchor(volver,10.0);
+        AnchorPane.setLeftAnchor(volver,10.0);
+
+        AnchorPane.setTopAnchor(repetir,10.0);
+        AnchorPane.setRightAnchor(repetir,10.0);
+
+        botonesSuperiores.getChildren().addAll(volver,repetir);
+
+        BorderPane root = new BorderPane();
+        root.setTop(botonesSuperiores);
+        root.setBottom(piano);
+        return new Scene(root, 500, 500);
     }
 }
