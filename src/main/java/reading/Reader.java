@@ -17,7 +17,7 @@ public class Reader {
     Map<String, Double> notesMIDI = new HashMap<>();
     String notes;
     public Reader() throws Exception{
-        this.notes = Files.readString(Path.of("data/partituras/notas.txt"));
+        this.notes = Files.readString(Path.of("data/notas.txt"));
         String[] lines = this.notes.split("\n");
         for (String line : lines){
             String[] partes = line.split("-");

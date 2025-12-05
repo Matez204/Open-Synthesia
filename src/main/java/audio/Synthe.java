@@ -3,7 +3,6 @@ package audio;
 import javafx.application.Platform;
 import visual.PianoView;
 
-import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -26,6 +25,7 @@ public class Synthe implements Runnable{
     public void setPiano(PianoView piano){
         this.piano = piano;
     }
+
     public void sonar(int note, double time) throws InterruptedException {
         this.channel.noteOn(note, 1000);
         Thread.sleep((long) time);
@@ -56,20 +56,5 @@ public class Synthe implements Runnable{
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void getInstruments() {
-        int n = 0;
-
-        for(Instrument i : this.sin.getAvailableInstruments()) {
-            System.out.print(n + " -- ");
-            System.out.println(i.getName());
-            ++n;
-        }
-
-    }
-
-    public void close() {
-        this.sin.close();
     }
 }

@@ -19,12 +19,12 @@ public class Pruebas {
 ////        sin1.stab(cancion[1]);
 ////        new Thread(sin).start();
 ////        new Thread(sin1).start();
-//        File carpeta = new File("data/partituras");
-//        if (carpeta.listFiles() != null){
-//            for (File i : carpeta.listFiles() ){
-//                System.out.println(i.getName() + "  " + i.getPath());
-//            }
-//        }
+        File carpeta = new File("data/partituras");
+        if (carpeta.listFiles() != null){
+            for (File i : carpeta.listFiles() ){
+                System.out.println(i.getName().replace(".txt","") + "  " + i.getPath());
+            }
+        }
 //        System.out.println(aa.length);
 //        System.out.println(bb.length);
 
