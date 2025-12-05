@@ -1,3 +1,23 @@
+/*
+ * This file is part of Open Synthesia.
+ *
+ * Copyright (C) 2025  Mathew Zahav Rodriguez Clavijo
+ *
+ * Open Synthesia is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Open Synthesia is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Open Synthesia.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
 import audio.Metronome;
 import audio.Synthe;
 import javafx.application.Application;
@@ -42,6 +62,7 @@ public class Main extends Application{
     }
 
     public static void initChoice(){
+        canciones.getItems().clear();
         File partituras = new File("data/partituras");
         List<Pair<String,String>> nombresCanciones = new ArrayList<>();
         if (partituras.listFiles() != null){
@@ -144,7 +165,9 @@ public class Main extends Application{
 
         BorderPane root = new BorderPane();
         root.setTop(botonesSuperiores);
-        root.setBottom(piano);
+        HBox cajaPiano = new HBox(piano);
+        cajaPiano.setAlignment(Pos.CENTER);
+        root.setBottom(cajaPiano);
         return new Scene(root, 500, 500);
     }
 }

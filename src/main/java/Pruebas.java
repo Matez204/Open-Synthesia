@@ -14,7 +14,7 @@ public class Pruebas {
 //        Synthe sin = new Synthe(0);
 //        Synthe sin1 = new Synthe(0);
 //        Reader r = new Reader();
-////        List<List<Double>>[] cancion = r.read("data/partituras/partitura1.txt");
+////        List<List<Double>>[] cancion = r.read("data/partituras/Jingle Bells.txt");
 ////        sin.stab(cancion[0]);
 ////        sin1.stab(cancion[1]);
 ////        new Thread(sin).start();
