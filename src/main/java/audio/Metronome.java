@@ -29,7 +29,7 @@ public class Metronome implements Runnable{
     public Metronome() throws MidiUnavailableException{
         beat = (double) (60000/120);
     }
-    public void stab(int time){
+    public static void stab(int time){
         beat = (double) (60000/time);
     }
     public void stop(){

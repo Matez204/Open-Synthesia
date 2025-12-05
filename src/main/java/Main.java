@@ -22,6 +22,7 @@ import audio.Metronome;
 import audio.Synthe;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Pair;
@@ -160,9 +161,28 @@ public class Main extends Application{
 
         AnchorPane.setTopAnchor(repetir,10.0);
         AnchorPane.setRightAnchor(repetir,10.0);
-
-        botonesSuperiores.getChildren().addAll(volver,repetir);
-
+        TextField metronomo = new TextField();
+        metronomo.setPromptText("Velocidad del metronomo");
+        metronomo.setPrefWidth(200.0);
+        Button seleccionMetro = new Button("Seleccionar");
+        HBox cajaMetronomo = new HBox(metronomo,seleccionMetro);
+        cajaMetronomo.setAlignment(Pos.CENTER);
+        AnchorPane.setTopAnchor(cajaMetronomo,10.0);
+        AnchorPane.setRightAnchor(cajaMetronomo,0.0);
+        AnchorPane.setLeftAnchor(cajaMetronomo,0.0);
+        botonesSuperiores.getChildren().addAll(volver,cajaMetronomo,repetir);
+        seleccionMetro.setOnAction(event -> {
+            String velocidad = metronomo.getText();
+            int vel;
+            if(velocidad != null){
+                try{
+                    vel = Integer.parseInt(velocidad);
+                    Metronome.stab(vel);
+                } catch (NumberFormatException e) {
+                    System.out.println("No es un numero");
+                }
+            }
+        });
         BorderPane root = new BorderPane();
         root.setTop(botonesSuperiores);
         HBox cajaPiano = new HBox(piano);
