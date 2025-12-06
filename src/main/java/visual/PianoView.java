@@ -61,7 +61,7 @@ public class PianoView extends Pane {
         KeyView tecla = getKey(midi);
         if (tecla!=null){
             if(rol){
-                tecla.shape.setFill(tecla.isBlack ? Color.DARKBLUE : Color.LIGHTBLUE);
+                tecla.shape.setFill(tecla.isBlack ? Color.DARKRED : Color.LIGHTSALMON);
             } else {
                 tecla.shape.setFill(tecla.isBlack ? Color.DARKGREEN : Color.LIGHTGREEN);
             }
